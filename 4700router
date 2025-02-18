@@ -232,12 +232,12 @@ class Router:
             print(f"the route_information {route_info} and {network}")
             for route in route_info:
                 print(f"checking this route {route}")
-                network = route["msg"].get("network")
-                netmask = route["msg"].get("netmask")
-                local_pref = route["msg"].get("localpref")
-                self_origin = route["msg"].get("selfOrigin",)
-                as_path = route["msg"].get("ASPath")
-                origin = route["msg"].get("origin")
+                network = route['msg'].get("network")
+                netmask = route['msg'].get("netmask")
+                local_pref = route['msg'].get("localpref")
+                self_origin = route['msg'].get("selfOrigin",)
+                as_path = route['msg'].get("ASPath")
+                origin = route['msg'].get("origin")
 
                 if self.ip_in_network(dst, network, netmask): # checks if the data's dst is within the network
 
@@ -254,19 +254,16 @@ class Router:
                                 best_route = route
 
                         elif local_pref == best_route["msg"].get("localpref"):
-                            print(f"we are comparing the local_pref from the table : {local_pref} to the "
-                                  f"best so far {best_route["msg"].get("localpref")}")
+
 
                                 # Prefer self-originated routes
                             if self_origin and not best_route["msg"].get("selfOrigin"):
                                     best_route = route
-                                    print(f"we are comparing the self_origin from the table: {self_origin} to the "
-                                          f"best so far {best_route["msg"].get("selfOrigin")}")
+
 
                             elif len(as_path) < len(best_route["msg"].get("ASPath")):
                                     best_route = route
-                                    print(f"we are comparing the as_path from the table: {as_path} to the "
-                                          f"best so far {(best_route["msg"].get("ASPath"))}")
+
 
                             elif len(as_path) == len(best_route["msg"].get("ASPath")):
                                     # Compare origin type
@@ -274,24 +271,21 @@ class Router:
 
                                 if origin == "IGP" and best_origin != "IGP":
                                         best_route = route
-                                        print(f"we are comparing the origin from the table for 'IGP': {origin} to the "
-                                              f"best so far {best_origin}")
+
 
                                 elif origin == "EGP" and best_origin == "UNK":
                                         best_route = route
-                                        print(f"we are comparing the origin from the table for 'EGP': {origin} to the "
-                                              f"best so far {best_origin}")
+
 
                                 elif origin == best_origin:
                                         # Break tie using lower source IP
                                         if route["src"] < best_route["src"]:
                                             best_route = route
-                                        print(f"we are comparing the source from the table for: {route["src"]} to the "
-                                              f"best so far {best_route["src"]}")
 
-        print(f"Final best route: {best_route}")
+
+
         self.update_forwarding_table(best_route)
-        print("Updated Forwarding Table in finding the best route:", self.forwarding_table)
+
         return best_route
 
 
