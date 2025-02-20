@@ -109,7 +109,7 @@ class Router:
         self.routes = new_routes
         self.send_updates(new_route, source)
 
-    # Function to sort the routes based on various criteria
+    # Function returns current route to see for aggregations
     def route_sort_key(self, route):
         return (
             route["peer"],
@@ -253,14 +253,6 @@ class Router:
                 }
                 self.send(neighbor, json.dumps(fwd_msg))
 
-    def drop_data(self, data):
-        update_message = {
-            "src": data["src"],
-            "dst": data["dst"],
-            "type": "no route",
-            "msg": {}
-        }
-        self.send(data["src"], json.dumps(update_message))
 
     ## taking care of constructing the best and creating the first hop
     def handle_data_message(self, data, source):
@@ -369,9 +361,7 @@ class Router:
 
         if (sender_relation != "cust") and (des_relation != "cust"):
             no_route = {
-
                 "src": str(self.our_addr(source)),
-
                 "dst": data.get("src"),
                 "type": "no route",
                 "msg": {}

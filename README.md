@@ -30,8 +30,6 @@ now_aggregate(self, routes): Aggregates routes based on the network mask and rou
 
 send_updates(self, route, sender): Sends route updates to neighbors according to their relationship type.
 
-drop_data(self, data): Drops data if no route is available to the destination.
-
 send_withdraw(self, remove_list, sender): Sends a withdraw message to its neighbors
 
 
