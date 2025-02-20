@@ -1,12 +1,15 @@
 Class Definitions
 Router
-This class defines the router logic, including the management of forwarding tables, route aggregation, and handling of different message types.
+This class defines the router logic, including the management of forwarding tables, 
+route aggregation, and handling of different message types for a BGP Router. 
 
 Attributes:
 relations: Stores relationship mappings with neighboring routers (e.g., customer, peer).
 sockets: Contains the UDP sockets for communication.
 ports: Holds the port mappings for each neighbor.
 forwarding_table: The list of network routes managed by the router.
+
+
 Methods:
 __init__(self, asn, connections): Initializes the router with its Autonomous System Number (ASN) and connections.
 
@@ -23,8 +26,7 @@ handle_data_message(self, data, source): Processes incoming data messages and fo
 update_forwarding_table(self, message, source): Updates the forwarding table with new routing information.
 
 now_aggregate(self, routes): Aggregates routes based on the network mask and routing information. 
-The helper route_sort_key() was used within this method which gets return the the route
-to be used during the aggregation. 
+
 
 send_updates(self, route, sender): Sends route updates to neighbors according to their relationship type.
 
@@ -34,11 +36,11 @@ send_withdraw(self, remove_list, sender): Sends a withdraw message to its neighb
 
 
 ******** HELPERS *******
-ip_to_int() : changes the IP to an int
+ip_to_int(self, ip) : changes the IP to an int
 
-int_to_ip(): changes an int to an IP address
+int_to_ip(self, i): changes an int to an IP address
 
-make_copy(): makes copies of route announcements 
+make_copy(self, message): makes copies of route announcements 
 
 find_the_best_route(self, dst): Finds the best route for a given destination of a data message.
 
@@ -49,6 +51,12 @@ in the binary representation of the netmask.
 
 ip_in_network(): method is another key component that determines if a given IP address belongs to a 
 particular network
+
+route_sort_key(self, route): Function returns current route to see for aggregations
+
+
+try_merge_routes(self, origin, last, has_been_aggregated, i, j): Function to check if two routes can be merged 
+and create a new aggregated route
 
 
 ### TESTING ### 
